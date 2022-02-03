@@ -4,6 +4,7 @@ The Meraki Network Configuration Script provides an programmable way to make net
 
 ## Contacts
 * Eda Akturk 
+* Simon Fang (sifang@cisco.com)
 
 ## Solution Components
 * Meraki Dashboard API

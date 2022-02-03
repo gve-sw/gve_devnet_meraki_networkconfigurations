@@ -188,6 +188,40 @@ def update_network_switch_static_routes(serial, static_route_id, name, subnet, n
     return response.json()
 
 
+def get_device_management_interface(serial):
+    """
+    Get Device Management Interface: https://developer.cisco.com/meraki/api-v1/#!get-device-management-interface
+    """
+    url = f"{base_url}devices/{serial}/managementInterface"
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "X-Cisco-Meraki-API-Key": api_key
+    }
+    response = requests.request('PUT', url, headers=headers)
+    return response.json()
+
+
+def update_device_management_interface(serial, ip, vlan):
+    """
+    Update Device Management Interface: https://developer.cisco.com/meraki/api-v1/#!update-device-management-interface
+    """
+    url = f"{base_url}devices/{serial}/managementInterface"
+    payload = {
+        "wan1": {
+            "staticIp": ip,
+            "vlan": vlan
+        },
+    }
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "X-Cisco-Meraki-API-Key": api_key
+    }
+    response = requests.request('PUT', url, headers=headers, data=json.dumps(payload))
+    return response.json()
+
+
 if __name__ == '__main__':
     # Use the functions above to make config changes on the Meraki network
 
@@ -204,6 +238,15 @@ if __name__ == '__main__':
     add_vlan = create_vlan(network_id, vlan, vlan_name,subnet,device_id)
 
 
+    # Sample code to pass list of device serial id's and get the sw network settings for them
+    
+    serial_numbers = ["xxx", "yyy", "zzz"] # set array with serial ids
+    
+    for device in serial_numbers: # loop through serial ids and get the network switch settings
+        settings = get_network_switch_settings(device)
+        print(settings)
+        
+        
     # Sample code to get the static routes of all the devices: 
 
     devices = get_devices(network_id)
